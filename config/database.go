@@ -14,6 +14,7 @@ type MySql struct{
 }
 
 type Ymal struct {
+	Addr int `mapstructure:"addr"`
 	JWT  JWT  `mapstructure:"jwt"`
 	MySql MySql  `mapstructure:"mysql"`
 }

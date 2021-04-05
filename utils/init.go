@@ -1,6 +1,8 @@
 package utils
 
+import "gin/global"
+
 func Init()  {
 	ViperTool()
-	GormMySql()
+	global.HS_DB = GormMySql()
 }

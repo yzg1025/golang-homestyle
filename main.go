@@ -1,11 +1,14 @@
 package main
 
 import (
-	"fmt"
+	"gin/core"
 	"gin/global"
 	"gin/utils"
 )
 func main() {
 	utils.Init()
-	fmt.Println("2323",global.GCONFIG.MySql)
+	db,_ := global.HS_DB.DB()
+	defer db.Close()
+	core.RunServer()
+
 }
