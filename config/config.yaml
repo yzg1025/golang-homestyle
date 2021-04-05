@@ -8,4 +8,9 @@ mysql:
   host: "127.0.0.1:3306"
   username: "root"
   password: "123456"
+juhe:
+  juheurl: "http://v.juhe.cn/sms/send"
+  apikey: "6372a0a15446a67e2576d538f02f55b5"
+  tplid: 185962
+  tplvalue: "#code#=185962"
 addr: 8866

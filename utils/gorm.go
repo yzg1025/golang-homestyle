@@ -27,13 +27,18 @@ func GormMySql() *gorm.DB {
 		fmt.Println("数据库连接失败")
 		return nil
 	}
-	err = db.AutoMigrate(models.Login{})
-	if err != nil {
-		fmt.Println("表创建失败")
-		return nil
-	}
+	registerModels(db)
+
 	sql,_:= db.DB()
 	sql.SetMaxIdleConns(10)
 	sql.SetMaxOpenConns(100)
 	return db
+}
+
+func registerModels(db *gorm.DB) {
+	err := db.AutoMigrate(models.Login{})
+	if err != nil {
+		fmt.Println("表创建失败")
+		return
+	}
 }

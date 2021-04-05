@@ -15,6 +15,12 @@ func Routers() *gin.Engine {
 	{
        router.BaseRouter(BaseGroup)
 	}
+
+	PHSGroup := Router.Group("api")
+	PHSGroup.Use(middleware.JWTAuth())
+	{
+		router.PrivacyRouter(PHSGroup)
+	}
 	fmt.Println("路由注册成功")
 	return Router
 }

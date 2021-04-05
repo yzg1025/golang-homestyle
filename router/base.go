@@ -9,6 +9,7 @@ func BaseRouter(Router *gin.RouterGroup) (R gin.IRoutes)  {
 	BR := Router.Group("hs_base")
 	{
 		BR.POST("login",v1.Login)
+		BR.POST("sendcode",v1.SendMsgCode)
 	}
 	return BR
 }
