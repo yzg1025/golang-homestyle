@@ -13,4 +13,13 @@ juhe:
   apikey: "6372a0a15446a67e2576d538f02f55b5"
   tplid: 185962
   tplvalue: "#code#=185962"
+zap:
+  level: 'info'
+  format: 'json'
+  director: 'log'
+  linkname: 'latest_log'
+  showline: true
+  encodelevel: 'LowercaseColorLevelEncoder'
+  stacktracekey: 'stacktrace'
+  loginconsole: true
 addr: 8866

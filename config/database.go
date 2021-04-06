@@ -19,10 +19,21 @@ type JUHE struct {
 	Tplid      int
 	Tplvalue   string
 }
+type ZAP struct {
+	Level        string
+	format       string
+	Director     string
+	Linkname     string
+	Showline     bool
+	Encodelevel  string
+	Stacktracekey string
+	Loginconsole bool
+}
 
 type Ymal struct {
 	Addr     int `mapstructure:"addr"`
 	JWT      JWT  `mapstructure:"jwt"`
 	MySql    MySql  `mapstructure:"mysql"`
 	JUHE     JUHE  `mapstructure:"juhe"`
+	ZAP      ZAP  `mapstructure:"zap"`
 }
