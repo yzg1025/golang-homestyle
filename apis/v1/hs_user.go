@@ -9,6 +9,7 @@ import (
 	"gin/utils"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -25,6 +26,7 @@ func Login(c *gin.Context)  {
     }
     err,u:=service.Login(L.Phone,L.Password)
 	if err != nil {
+		global.HS_LOG.Warn("该用户不存在!", zap.Any("err", err))
 		utils.FailMag("该用户不存在",c)
 		return
 	}

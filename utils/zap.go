@@ -1,22 +1,19 @@
 package utils
 
 import (
-	"fmt"
 	"gin/global"
 	zaprotatelogs "github.com/lestrrat/go-file-rotatelogs"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"os"
-	"path"
+	"strings"
 	"time"
 )
 var level zapcore.Level
 var zaps = global.GCONFIG.ZAP
 func ZAP() (logger *zap.Logger) {
-	fmt.Println(zaps)
 	if ok, _ := PathExists(zaps.Director); !ok { // 判断是否有Director文件夹
-		fmt.Printf("create %v directory\n", zaps.Director)
-		_ = os.Mkdir(zaps.Director, os.ModePerm)
+		_ = os.MkdirAll("./logs", os.ModePerm)
 	}
 	switch zaps.Level {
 	case "debug":
@@ -57,7 +54,7 @@ func getEncoderCore() (core zapcore.Core) {
 
 func GetWriteSyncer() (zapcore.WriteSyncer, error) {
 	fileWriter, err := zaprotatelogs.New(
-		path.Join(zaps.Director, "%Y-%m-%d.log"),
+		strings.Replace("./logs/", ".log", "", -1)+"%Y-%m-%d.log",
 		zaprotatelogs.WithLinkName(zaps.Linkname),
 		zaprotatelogs.WithMaxAge(7*24*time.Hour),
 		zaprotatelogs.WithRotationTime(24*time.Hour),
@@ -67,7 +64,7 @@ func GetWriteSyncer() (zapcore.WriteSyncer, error) {
 
 func getEncoderConfig() (config zapcore.EncoderConfig) {
 	config = zapcore.EncoderConfig{
-		MessageKey: "meg",
+		MessageKey: "msg",
 		LevelKey: "level",
 		TimeKey:  "time",
 		NameKey: "logger",
@@ -96,7 +93,7 @@ func getEncoderConfig() (config zapcore.EncoderConfig) {
 
 // 自定义日志输出时间格式
 func CustomTimeEncoder(t time.Time, enc zapcore.PrimitiveArrayEncoder) {
-	enc.AppendString(t.Format("2006/01/02 - 15:04:05.000"))
+	enc.AppendString(t.Format("2006/01/02 - 15:04:05"))
 }
 
 func PathExists(path string) (bool, error) {

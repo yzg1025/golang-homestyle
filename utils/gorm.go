@@ -36,7 +36,8 @@ func GormMySql() *gorm.DB {
 }
 
 func registerModels(db *gorm.DB) {
-	err := db.AutoMigrate(models.Login{})
+	err := db.AutoMigrate(
+		models.Login{},models.Logs{})
 	if err != nil {
 		fmt.Println("表创建失败")
 		return

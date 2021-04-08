@@ -10,5 +10,4 @@ func main() {
 	db,_ := global.HS_DB.DB()
 	defer db.Close()
 	core.RunServer()
-
 }

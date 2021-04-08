@@ -16,7 +16,7 @@ juhe:
 zap:
   level: 'info'
   format: 'json'
-  director: 'log'
+  director: './logs'
   linkname: 'latest_log'
   showline: true
   encodelevel: 'LowercaseColorLevelEncoder'

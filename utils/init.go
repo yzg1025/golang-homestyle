@@ -1,6 +1,8 @@
 package utils
 
-import "gin/global"
+import (
+	"gin/global"
+)
 
 func Init()  {
 	ViperTool()

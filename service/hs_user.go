@@ -12,3 +12,8 @@ func Login(phone,password string) (err error,user *models.Login) {
 	err = global.HS_DB.Where("phone = ? AND password = ?",phone,password).First(&U).Error
 	return err,&U
 }
+
+func SaveLog(logs models.Logs) (err error) {
+	err = global.HS_DB.Create(&logs).Error
+	return err
+}
