@@ -94,3 +94,53 @@ func Post(apiURL string, params url.Values) (rs []byte, err error) {
 	return ioutil.ReadAll(resp.Body)
 }
 
+func ChangePassword(c *gin.Context)  {
+   var C models.ChangePassword
+   _ = c.ShouldBindJSON(&C)
+	if err := utils.Verify(C, utils.ChangePasswordVerify); err != nil {
+		utils.FailMag(err.Error(), c)
+		return
+	}
+	U := &models.Login{Phone: C.Phone,Password: C.Password}
+	if err,_ := service.ChangePassword(U,C.NewPassword);err != nil{
+		global.HS_LOG.Error("修改失败", zap.Any("err", err))
+		utils.FailMag("修改失败，原密码与当前账户不符", c)
+		return
+	}
+	utils.SuccessMsg("修改成功", c)
+}
+
+// SelectCode 查询国家code
+func SelectCode(c *gin.Context)  {
+	var S models.AreaCode
+	_ = c.ShouldBindJSON(&S)
+    err,list := service.QueryCountry()
+	if err != nil {
+		global.HS_LOG.Error("countrycode获取失败",zap.Any("err",err))
+		utils.FailMag("countrycode获取失败",c)
+	}
+	utils.SuccessData(list,c)
+}
+
+// CreateCode 新增国家code
+func CreateCode(c *gin.Context)  {
+	var S []models.AreaCode
+	_ = c.ShouldBindJSON(&S)
+	for _, value := range S {
+		if err:= utils.Verify(value,utils.CountryCode);err != nil{
+			utils.FailMag(err.Error(),c)
+			return
+		}
+		if isExit,country := service.IsExitCountry(value.Cname); isExit {
+			global.HS_LOG.Error("重复添加",zap.Any("data",country))
+			utils.FailWithDetailed(country,"重复添加",c)
+			return
+		}
+		if err := service.CreateCountry(value);err !=nil {
+			global.HS_LOG.Error("添加失败",zap.Any("err",err))
+			utils.FailMag("添加失败",c)
+			return
+		}
+	}
+	utils.SuccessMsg("添加成功",c)
+}

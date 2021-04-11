@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin/global"
 	"gin/models"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 	"gorm.io/driver/mysql"
 )
@@ -24,7 +25,7 @@ func GormMySql() *gorm.DB {
 	}
 	db,err := gorm.Open(mysql.New(mysqlConfig),&gorm.Config{})
 	if err != nil {
-		fmt.Println("数据库连接失败")
+		global.HS_LOG.Error("数据库连接失败",zap.Any("err",err))
 		return nil
 	}
 	registerModels(db)
@@ -37,7 +38,10 @@ func GormMySql() *gorm.DB {
 
 func registerModels(db *gorm.DB) {
 	err := db.AutoMigrate(
-		models.Login{},models.Logs{})
+		models.Login{},
+		models.Logs{},
+		models.AreaCode{},
+	)
 	if err != nil {
 		fmt.Println("表创建失败")
 		return

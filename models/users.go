@@ -10,3 +10,9 @@ type Login struct {
 	RegisterTime string `json:"register_time"`
 	Header string `json:"header"`
 }
+
+type ChangePassword struct {
+	Phone    string `json:"username"`
+	Password    string `json:"password"`
+	NewPassword string `json:"newPassword"`
+}
