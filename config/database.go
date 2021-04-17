@@ -30,10 +30,18 @@ type ZAP struct {
 	Loginconsole bool
 }
 
+type Qiniu struct {
+	Accesskey string
+	Secretkey string
+	Bucket    string
+	Qiniuserver string
+}
+
 type Ymal struct {
 	Addr     int `mapstructure:"addr"`
 	JWT      JWT  `mapstructure:"jwt"`
 	MySql    MySql  `mapstructure:"mysql"`
 	JUHE     JUHE  `mapstructure:"juhe"`
 	ZAP      ZAP  `mapstructure:"zap"`
+	Qiniu      Qiniu  `mapstructure:"qiniu"`
 }

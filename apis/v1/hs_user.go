@@ -144,3 +144,26 @@ func CreateCode(c *gin.Context)  {
 	}
 	utils.SuccessMsg("添加成功",c)
 }
+
+func Register(c *gin.Context)  {
+	var R models.Register
+	_ = c.ShouldBindJSON(&R)
+	if err := utils.Verify(R,utils.Register); err != nil{
+		utils.FailMag(err.Error(),c)
+		return
+	}
+	user := &models.Login{
+		NickName: R.NickName,
+		Phone: R.Phone,
+		Password: R.Password,
+		RegisterTime:time.Now(),
+		LoginMethod: "pc",
+	}
+    err,u := service.Register(*user)
+	if err != nil {
+		global.HS_LOG.Error("注册失败", zap.Any("err", err))
+		utils.FailMag("注册失败",c)
+		return
+	}
+	utils.SuccessData(u,c)
+}

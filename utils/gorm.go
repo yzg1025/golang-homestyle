@@ -5,8 +5,8 @@ import (
 	"gin/global"
 	"gin/models"
 	"go.uber.org/zap"
-	"gorm.io/gorm"
 	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func GormMySql() *gorm.DB {
@@ -41,6 +41,7 @@ func registerModels(db *gorm.DB) {
 		models.Login{},
 		models.Logs{},
 		models.AreaCode{},
+		models.Banner{},
 	)
 	if err != nil {
 		fmt.Println("表创建失败")

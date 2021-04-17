@@ -16,6 +16,7 @@ require (
 	github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.1 // indirect
+	github.com/qiniu/go-sdk/v7 v7.9.3
 	github.com/spf13/viper v1.7.1
 	github.com/ugorji/go v1.2.5 // indirect
 	go.uber.org/multierr v1.6.0 // indirect

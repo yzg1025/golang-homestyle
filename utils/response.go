@@ -35,7 +35,7 @@ func SuccessMsg(msg string,c *gin.Context)  {
 	Result(SUCCESS, map[string]interface{}{},msg,c)
 }
 
-// 返回成功数据
+// SuccessData 返回成功数据
 func SuccessData(data interface{},c *gin.Context)  {
 	Result(SUCCESS,data,"操作成功",c)
 }

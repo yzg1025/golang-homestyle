@@ -1,9 +1,12 @@
 package service
 
 import (
+	"errors"
+	"fmt"
 	"gin/global"
 	"gin/models"
 	"gin/utils"
+	"gorm.io/gorm"
 )
 
 func Login(phone,password string) (err error,user *models.Login) {
@@ -20,7 +23,9 @@ func SaveLog(logs models.Logs) (err error) {
 
 func ChangePassword(login *models.Login, newpassword string) (err error, userInter *models.Login) {
 	var u models.Login
-	u.Password = utils.MD5([]byte(u.Password))
+
+	login.Password = utils.MD5([]byte(login.Password))
+	fmt.Println("111",login.Password,login.Phone,newpassword)
 	err = global.HS_DB.Where("phone = ? AND password = ?", login.Phone, login.Password).First(&u).Update("password", utils.MD5([]byte(newpassword))).Error
 	return err, login
 }
@@ -43,4 +48,14 @@ func IsExitCountry(codes string) (isExit bool,code interface{}) {
 func CreateCountry(code models.AreaCode) (err error) {
 	err = global.HS_DB.Create(&code).Error
 	return err
+}
+
+func Register(u models.Login) (err error,userInter models.Login) {
+	var user models.Login
+	if !errors.Is(global.HS_DB.Where("phone = ?", u.Phone).First(&user).Error, gorm.ErrRecordNotFound) { // 判断用户名是否注册
+		return errors.New("用户名已注册"), userInter
+	}
+	u.Password = utils.MD5([]byte(u.Password))
+	err = global.HS_DB.Create(&u).Error
+	return err,u
 }

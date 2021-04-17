@@ -8,7 +8,7 @@ import (
 func PrivacyRouter(Router *gin.RouterGroup) (R gin.IRoutes)  {
 	PR := Router.Group("hs_privacy")
 	{
-		PR.GET("test",v1.Test)
+		PR.POST("upload",v1.UploadFile)
 		PR.POST("change_password",v1.ChangePassword)
 	}
 	return PR
