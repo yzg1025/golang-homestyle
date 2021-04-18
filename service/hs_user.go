@@ -21,6 +21,12 @@ func SaveLog(logs models.Logs) (err error) {
 	return err
 }
 
+func GetLog() (err error,list interface{}) {
+	var L []models.Logs
+	err = global.HS_DB.Find(&L).Error
+	return err,&L
+}
+
 func ChangePassword(login *models.Login, newpassword string) (err error, userInter *models.Login) {
 	var u models.Login
 

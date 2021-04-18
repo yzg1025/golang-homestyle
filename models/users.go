@@ -4,7 +4,7 @@ import "time"
 
 type Login struct {
 	Uid int `gorm:"primarykey" json:"uid"`
-	NickName string `json:"user_name"`
+	NickName string `json:"nickname"`
 	Phone string `json:"phone"`
 	Password string `json:"password"`
 	LoginMethod string `json:"login_method"`

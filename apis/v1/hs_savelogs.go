@@ -2,14 +2,24 @@ package v1
 
 import (
 	"fmt"
+	"gin/global"
 	"gin/models"
 	"gin/service"
 	"gin/utils"
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"io/ioutil"
 	"time"
 )
 
+func GetLogs(c *gin.Context)  {
+	err,list := service.GetLog()
+	if err != nil {
+		global.HS_LOG.Error("获取失败",zap.Any("err",err))
+		utils.FailMag("获取失败",c)
+	}
+	utils.SuccessData(list,c)
+}
 
 func SaveLogs(c *gin.Context)  {
 	date := fmt.Sprintf("%v-%v-%v",time.Now().Format("2006"),time.Now().Format("01"),time.Now().Format("02"))

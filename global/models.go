@@ -11,3 +11,7 @@ type Models struct {
 	UpdatedAt time.Time
 	DeletedAt gorm.DeletedAt `gorm:"index" json:"-"`
 }
+
+type GetById struct {
+	Id int `json:"id" form:"id"`
+}

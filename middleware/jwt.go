@@ -47,7 +47,7 @@ type JWT struct {
 }
 
 type MyClaims struct {
-	ID int
+	Uid int
 	NickName string
 	BufferTime  int64
 	jwt.StandardClaims

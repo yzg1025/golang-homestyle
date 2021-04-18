@@ -12,7 +12,9 @@ func Routers() *gin.Engine {
 	Router.Use(middleware.Cors())
 	BaseGroup := Router.Group("api")
 	{
-       router.BaseRouter(BaseGroup)
+       router.BaseRouterUser(BaseGroup)
+       router.BaseRouterBanner(BaseGroup)
+       router.BaseRouterOther(BaseGroup)
 	}
 
 	PHSGroup := Router.Group("api")

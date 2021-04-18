@@ -43,7 +43,7 @@ func tokenSend(user models.Login) string {
 		SigningKey: []byte(global.GCONFIG.JWT.Signingkey),
 	}
 	claims := middleware.MyClaims{
-		ID: user.ID,
+		Uid: user.Uid,
 		NickName: user.NickName,
 		BufferTime: 60 * 60 * 24,
 		StandardClaims: jwt.StandardClaims{
@@ -60,7 +60,7 @@ func tokenSend(user models.Login) string {
 	return token
 }
 
-// 发送验证码
+// SendMsgCode 发送验证码
 func SendMsgCode(c *gin.Context)  {
 	var L models.Login
 	_ = c.ShouldBindJSON(&L)

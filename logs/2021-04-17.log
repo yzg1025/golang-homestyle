@@ -1,2 +1,24 @@
 {"level":"error","time":"2021/04/17 - 14:13:22","msg":"注册失败","err":"用户名已注册"}
 {"level":"error","time":"2021/04/17 - 14:16:14","msg":"注册失败","err":"用户名已注册"}
+{"level":"error","time":"2021/04/17 - 20:38:43","msg":"注册失败","err":"用户名已注册"}
+{"level":"warn","time":"2021/04/17 - 20:41:21","msg":"该用户不存在!","err":"record not found"}
+{"level":"error","time":"2021/04/17 - 21:44:09","msg":"创建失败!","err":"存在相同api"}
+{"level":"error","time":"2021/04/17 - 21:45:15","msg":"banner 参数不为空","err":"RedirectUrl值不能为空"}
+{"level":"error","time":"2021/04/17 - 21:45:27","msg":"banner 参数不为空","err":"RedirectUrl值不能为空"}
+{"level":"error","time":"2021/04/17 - 21:46:35","msg":"banner 参数不为空","err":"RedirectUrl值不能为空"}
+{"level":"error","time":"2021/04/17 - 21:47:05","msg":"创建失败!","err":"存在相同api"}
+{"level":"error","time":"2021/04/17 - 21:49:55","msg":"banner 参数不为空","err":"RedirectUrl值不能为空"}
+{"level":"error","time":"2021/04/17 - 21:50:06","msg":"创建失败!","err":"存在相同api"}
+{"level":"error","time":"2021/04/17 - 21:50:56","msg":"创建失败!","err":"存在相同api"}
+{"level":"warn","time":"2021/04/17 - 21:52:08","msg":"该用户不存在!","err":"record not found"}
+{"level":"error","time":"2021/04/17 - 22:29:31","msg":"banner id 不为空","err":"不是结构体"}
+{"level":"error","time":"2021/04/17 - 22:46:28","msg":"banner id 不为空","err":"ID值不能为空"}
+{"level":"error","time":"2021/04/17 - 22:46:28","msg":"删除失败!","err":"WHERE conditions required"}
+{"level":"error","time":"2021/04/17 - 22:47:08","msg":"banner id 不为空","err":"ID值不能为空"}
+{"level":"error","time":"2021/04/17 - 22:47:08","msg":"删除失败!","err":"WHERE conditions required"}
+{"level":"error","time":"2021/04/17 - 22:48:09","msg":"banner id 不为空","err":"ID值不能为空"}
+{"level":"error","time":"2021/04/17 - 22:48:30","msg":"修改失败!","err":"WHERE conditions required"}
+{"level":"error","time":"2021/04/17 - 23:05:08","msg":"修改失败!","err":"WHERE conditions required"}
+{"level":"error","time":"2021/04/17 - 23:06:06","msg":"修改失败!","err":"WHERE conditions required"}
+{"level":"error","time":"2021/04/17 - 23:08:49","msg":"修改失败!","err":"存在相同的banner"}
+{"level":"error","time":"2021/04/17 - 23:09:08","msg":"修改失败!","err":"存在相同的banner"}
