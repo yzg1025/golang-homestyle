@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gin/middleware"
 	"gin/router"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,9 +13,14 @@ func Routers() *gin.Engine {
 	Router.Use(middleware.Cors())
 	BaseGroup := Router.Group("api")
 	{
-       router.BaseRouterUser(BaseGroup)
-       router.BaseRouterBanner(BaseGroup)
-       router.BaseRouterOther(BaseGroup)
+		router.BaseRouterTest(BaseGroup)
+		router.BaseRouterUser(BaseGroup)
+		router.BaseRouterBanner(BaseGroup)
+		router.BaseRouterOther(BaseGroup)
+		router.BaseRouterPersonal(BaseGroup)
+		router.BaseRouterRoomCount(BaseGroup)
+
+		router.BaseRouterRankAlbum(BaseGroup)
 	}
 
 	PHSGroup := Router.Group("api")

@@ -22,10 +22,12 @@ zap:
   encodelevel: 'LowercaseColorLevelEncoder'
   stacktracekey: 'stacktrace'
   loginconsole: true
-qiniu:
-  accesskey: 'UPCFbtW8-PGKVOj5pU2TycofmiK_Yfy8mBYP56Ok'
-  secretkey: 'xfE1UlUnjpUYNSTkrtLO5AcwucVK3d5bBF2URfjf'
-  bucket: 'homein'
-  qiniuserver: 'http://qqbi9utzj.hd-bkt.clouddn.com/'
+oss:
+  accesskeyid: 'LTAI4FwqokDreZU6t3q7hzqP'
+  accesskeysecret: 'qA90MM4eNhcqZAiIbcstuFlKbQ0TfA'
+  endpoint: 'oss-cn-beijing.aliyuncs.com'
+  bucket: 'homestyle'
+  uploaddir: 'home'
+  ossserve: 'https://homestyle.oss-cn-beijing.aliyuncs.com/'
 header: 'http://qqbi9utzj.hd-bkt.clouddn.com/Fhh6BiidOhTl-a86HdU2fozVI8BI'
 addr: 8866

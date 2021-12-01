@@ -3,6 +3,7 @@ module gin
 go 1.16
 
 require (
+	github.com/aliyun/aliyun-oss-go-sdk v2.1.8+incompatible
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fsnotify/fsnotify v1.4.7
 	github.com/gin-gonic/gin v1.6.3

@@ -1,0 +1,2 @@
+{"level":"error","time":"2021/11/21 - 21:17:09","msg":"删除失败!","err":"Error 1451: Cannot delete or update a parent row: a foreign key constraint fails (`homestyle`.`locations`, CONSTRAINT `fk_room_lists_location` FOREIGN KEY (`id`) REFERENCES `room_lists` (`id`))"}
+{"level":"error","time":"2021/11/21 - 21:19:16","msg":"删除失败!","err":"Error 1451: Cannot delete or update a parent row: a foreign key constraint fails (`homestyle`.`locations`, CONSTRAINT `fk_room_lists_location` FOREIGN KEY (`id`) REFERENCES `room_lists` (`id`))"}
