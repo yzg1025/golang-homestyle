@@ -16,7 +16,7 @@ func GetBanners() (err error,list interface{}) {
 
 func CreateBanner(b models.Banner) (err error) {
 	if !errors.Is(global.HS_DB.Where("url = ? AND redirect_url = ?", b.Url, b.RedirectUrl).First(&models.Banner{}).Error, gorm.ErrRecordNotFound) {
-		return errors.New("存在相同api")
+		return errors.New("存在相同的banner")
 	}
 	return global.HS_DB.Create(&b).Error
 }
@@ -33,11 +33,11 @@ func UpdateB(b models.Banner) (err error) {
 		return errors.New("查找不到该条记录")
 	}
 	fmt.Println(oldA.Url == b.Url || oldA.RedirectUrl == b.RedirectUrl)
-	if oldA.Url == b.Url || oldA.RedirectUrl == b.RedirectUrl {
-		if !errors.Is(global.HS_DB.Where("url = ? AND redirect_url = ?", b.Url, b.RedirectUrl).First(&models.Banner{}).Error, gorm.ErrRecordNotFound) {
-			return errors.New("存在相同的banner")
-		}
-	}
+	//if oldA.Url == b.Url || oldA.RedirectUrl == b.RedirectUrl {
+	//	if !errors.Is(global.HS_DB.Where("url = ? AND redirect_url = ?", b.Url, b.RedirectUrl).First(&models.Banner{}).Error, gorm.ErrRecordNotFound) {
+	//		return errors.New("存在相同的banner")
+	//	}
+	//}
 	err = global.HS_DB.Save(b).Error
 	return err
 }

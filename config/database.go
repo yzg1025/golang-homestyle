@@ -30,11 +30,13 @@ type ZAP struct {
 	Loginconsole bool
 }
 
-type Qiniu struct {
-	Accesskey string
-	Secretkey string
-	Bucket    string
-	Qiniuserver string
+type Oss struct {
+	Accesskeyid string
+	Accesskeysecret string
+	Endpoint    string
+	Bucket string
+	Uploaddir string
+	Ossserve string
 }
 
 type Ymal struct {
@@ -43,5 +45,5 @@ type Ymal struct {
 	MySql    MySql  `mapstructure:"mysql"`
 	JUHE     JUHE  `mapstructure:"juhe"`
 	ZAP      ZAP  `mapstructure:"zap"`
-	Qiniu      Qiniu  `mapstructure:"qiniu"`
+	Oss      Oss  `mapstructure:"oss"`
 }
