@@ -133,3 +133,74 @@ type Radio struct {
 	CategoryName      string `gorm:"column:categoryName" json:"categoryName"`
 	CategoryRank      int    `gorm:"column:categoryRank" json:"categoryRank"`
 }
+
+// https://www.ximalaya.com/revision/album/v1/simple?albumId=4615999
+type Albumsimple struct{
+	AnchorUid   int `gorm:"column:anchorUid" json:"anchorUid"`,
+	AlbumStatus   int `gorm:"column:albumStatus" json:"albumStatus"`
+	ShowApplyFinishBtn   bool `gorm:"column:showApplyFinishBtn" json:"showApplyFinishBtn"`
+	ShowEditBtn   bool `gorm:"column:showEditBtn" json:"showEditBtn"`
+	ShowTrackManagerBtn   bool `gorm:"column:showTrackManagerBtn" json:"showTrackManagerBtn"`
+	ShowInformBtn   bool `gorm:"column:showInformBtn" json:"showInformBtn"`
+	Cover   string `json:"cover"`
+	AlbumTitle   string `gorm:"column:albumTitle" json:"albumTitle"`
+	UpdateDate   string `gorm:"column:updateDate" json:"updateDate"`
+	CreateDate   string `gorm:"column:createDate" json:"createDate"`
+	PlayCount   int64 `gorm:"column:playCount" json:"playCount"`
+	isPaid   bool `gorm:"column:isPaid" json:"isPaid"`
+	IsFinished   string `gorm:"column:isFinished" json:"isFinished"`
+	IsSubscribe   bool `gorm:"column:isSubscribe" json:"isSubscribe"`
+	shortIntro   string `gorm:"column:shortIntro" json:"shortIntro"`
+	IsPublic   bool `gorm:"column:isPublic" json:"isPublic"`
+	HasBuy   bool `gorm:"column:hasBuy" json:"hasBuy"`
+	VipType   int `gorm:"column:vipType" json:"vipType"`
+	CustomTitle   string `gorm:"column:customTitle" json:"customTitle"`
+	RecommendReason   string `gorm:"column:recommendReason" json:"recommendReason"`
+	AlbumSubscript   int `gorm:"column:albumSubscript" json:"albumSubscript"`
+	Tags   string `json:"tags"`
+	XimiVipFreeType   int `gorm:"column:ximiVipFreeType" json:"ximiVipFreeType"`
+	PriceOp  PriceOp  `json:'priceOp'`
+}
+type PriceOp struct{
+	gin.Model
+	AlbumDiscountedPrice string `gorm:"column:albumDiscountedPrice" json:"albumDiscountedPrice"`
+	AlbumPrice string `gorm:"column:albumPrice" json:"albumPrice"`
+	PriceType int `gorm:"column:priceType" json:"priceType"`
+	RemainAlbumTotalPrice string `gorm:"column:remainAlbumTotalPrice" json:"remainAlbumTotalPrice"`
+}
+
+// https://www.ximalaya.com/revision/seo/hotWordAlbums?id=4615999&queryType=1
+type HotWordAlbums struct{
+	CoverPath   string `gorm:"column:coverPath" json:"coverPath"`
+	ID   int `json:"id"`
+	Intro   string `json:"intro"`
+	IsPaid   bool `gorm:"column:isPaid" json:"isPaid"`
+	Link   string `json:"link"`
+	Nickname   string `json:"nickname"`
+	PlayCount   int `gorm:"column:playCount" json:"playCount"`
+	Title   string `json:"title"`
+	TrackCount   int `gorm:"column:trackCount" json:"trackCount"`
+	VipType   int `gorm:"column:vipType" json:"vipType"`
+}
+
+// https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=4615999&pageNum=40
+type TracksAlbum struct{
+	AlbumCoverPath   string `gorm:"column:albumCoverPath" json:"albumCoverPath"`
+	AlbumId   int `gorm:"column:albumId" json:"albumId"`
+	AlbumTitle   string `gorm:"column:albumTitle" json:"albumTitle"`
+	AnchorId   int `gorm:"column:anchorId" json:"anchorId"`
+	AnchorName   string `gorm:"column:anchorName" json:"anchorName"`
+    BreakSecond   int `gorm:"column:breakSecond" json:"breakSecond"`
+	CreateDateFormat   string `gorm:"column:createDateFormat" json:"createDateFormat"`
+	Duration   int `gorm:"column:duration" json:"duration"`
+	IsLike   bool `gorm:"column:isLike" json:"isLike"`
+	IsPaid   bool `gorm:"column:isPaid" json:"isPaid"`
+	IsVideo   bool `gorm:"column:isVideo" json:"isVideo"`
+	IsVipFirst   bool `gorm:"column:isVipFirst" json:"isVipFirst"`
+	Length   int `json:"length"`
+	PlayCount   int `gorm:"column:playCount" json:"playCount"`
+	Tag   int `json:"tag"`
+	Title   string `titlejson:"title"`
+	TrackId   int `gorm:"column:trackId" json:"trackId"`
+	Url   string `json:"url"`
+}
