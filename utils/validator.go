@@ -7,43 +7,43 @@ import (
 	"strconv"
 	"strings"
 )
+
 func NotEmpty() string {
 	return "notEmpty"
 }
 
 type Rules map[string][]string
 
-func Verify(s interface{},roleMap Rules) (err error) {
+func Verify(s interface{}, roleMap Rules) (err error) {
 	compareMap := map[string]bool{
-		"lt":true,
-		"le":true,
-		"eq":true,
-		"ne":true,
-		"ge":true,
-		"gt":true,
+		"lt": true,
+		"le": true,
+		"eq": true,
+		"ne": true,
+		"ge": true,
+		"gt": true,
 	}
 
 	typ := reflect.TypeOf(s)
 	val := reflect.ValueOf(s)
 	kd := val.Kind()
-	if kd != reflect.Struct{
+	if kd != reflect.Struct {
 		return errors.New("不是结构体")
 	}
 	num := val.NumField()
-	for i := 0; i <num ; i++ {
+	for i := 0; i < num; i++ {
 		tagVal := typ.Field(i)
 		val := val.Field(i)
-		if len(roleMap[tagVal.Name]) >0 {
+		if len(roleMap[tagVal.Name]) > 0 {
 			for _, v := range roleMap[tagVal.Name] {
 				fmt.Println(v)
 				switch {
 				case v == "notEmpty":
 					if isBlank(val) {
-						fmt.Println(tagVal.Name)
 						return errors.New(tagVal.Name + "值不能为空")
 					}
-				case compareMap[strings.Split(v,"=")[0]]:
-					if !compareVerify(val,v) {
+				case compareMap[strings.Split(v, "=")[0]]:
+					if !compareVerify(val, v) {
 						return errors.New(tagVal.Name + "长度或值不在合法范围," + v)
 					}
 				}
@@ -56,19 +56,19 @@ func Verify(s interface{},roleMap Rules) (err error) {
 func isBlank(val reflect.Value) bool {
 	switch val.Kind() {
 	case reflect.String:
-		return  val.Len() == 0
+		return val.Len() == 0
 	case reflect.Bool:
 		return !val.Bool()
-	case reflect.Int,reflect.Int8,reflect.Int16,reflect.Int32,reflect.Int64:
+	case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 		return val.Int() == 0
-	case reflect.Uint,reflect.Uint8,reflect.Uint16,reflect.Uint32,reflect.Uint64:
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 		return val.Uint() == 0
-	case reflect.Float32,reflect.Float64:
+	case reflect.Float32, reflect.Float64:
 		return val.Float() == 0
-	case reflect.Interface,reflect.Ptr:
+	case reflect.Interface, reflect.Ptr:
 		return val.IsNil()
 	}
-	return reflect.DeepEqual(val.Interface(),reflect.Zero(val.Type()).Interface())
+	return reflect.DeepEqual(val.Interface(), reflect.Zero(val.Type()).Interface())
 }
 
 func compareVerify(value reflect.Value, VerifyStr string) bool {
@@ -157,25 +157,3 @@ func compare(value interface{}, VerifyStr string) bool {
 		return false
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

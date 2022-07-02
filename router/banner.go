@@ -6,12 +6,15 @@ import (
 )
 
 func BaseRouterBanner(Router *gin.RouterGroup) (R gin.IRoutes) {
+
 	BR := Router.Group("hs_base")
+	//var banner = v1.Banner
+	banner := v1.NewBannerInter()
 	{
-		BR.POST("banners_create", v1.BannerC)
-		BR.GET("banners_list", v1.Banners)
-		BR.POST("banners_delete", v1.BannerD)
-		BR.POST("banners_edit", v1.BannerE)
+		BR.POST("banners_create", banner.BannerC)
+		BR.GET("banners_list", banner.Banners)
+		BR.POST("banners_delete", banner.BannerD)
+		BR.POST("banners_edit", banner.BannerE)
 	}
 	return BR
 }

@@ -2,15 +2,18 @@ package utils
 
 import (
 	"gin/global"
-	zaprotatelogs "github.com/lestrrat/go-file-rotatelogs"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"os"
 	"strings"
 	"time"
+
+	zaprotatelogs "github.com/lestrrat/go-file-rotatelogs"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
+
 var level zapcore.Level
-var zaps = global.GCONFIG.ZAP
+var zaps = global.CONFIG.ZAP
+
 func ZAP() (logger *zap.Logger) {
 	if ok, _ := PathExists(zaps.Director); !ok { // 判断是否有Director文件夹
 		_ = os.MkdirAll("./logs", os.ModePerm)
@@ -35,8 +38,8 @@ func ZAP() (logger *zap.Logger) {
 	}
 
 	if level == zap.DebugLevel || level == zap.ErrorLevel {
-		logger = zap.New(getEncoderCore(),zap.AddStacktrace(level))
-	}else{
+		logger = zap.New(getEncoderCore(), zap.AddStacktrace(level))
+	} else {
 		logger = zap.New(getEncoderCore())
 	}
 
@@ -45,11 +48,11 @@ func ZAP() (logger *zap.Logger) {
 
 func getEncoderCore() (core zapcore.Core) {
 	getEnder := zapcore.NewJSONEncoder(getEncoderConfig())
-	wr,err:= GetWriteSyncer()
+	wr, err := GetWriteSyncer()
 	if err != nil {
 		panic(err.Error())
 	}
-	return zapcore.NewCore(getEnder, wr,level)
+	return zapcore.NewCore(getEnder, wr, level)
 }
 
 func GetWriteSyncer() (zapcore.WriteSyncer, error) {
@@ -64,17 +67,17 @@ func GetWriteSyncer() (zapcore.WriteSyncer, error) {
 
 func getEncoderConfig() (config zapcore.EncoderConfig) {
 	config = zapcore.EncoderConfig{
-		MessageKey: "msg",
-		LevelKey: "level",
-		TimeKey:  "time",
-		NameKey: "logger",
-		CallerKey: "caller",
-		StacktraceKey: zaps.Stacktracekey,
-		LineEnding: zapcore.DefaultLineEnding,
-		EncodeLevel: zapcore.LowercaseLevelEncoder,
-		EncodeTime: CustomTimeEncoder,
+		MessageKey:     "msg",
+		LevelKey:       "level",
+		TimeKey:        "time",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		StacktraceKey:  zaps.Stacktracekey,
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,
+		EncodeTime:     CustomTimeEncoder,
 		EncodeDuration: zapcore.SecondsDurationEncoder,
-		EncodeCaller: zapcore.FullCallerEncoder,
+		EncodeCaller:   zapcore.FullCallerEncoder,
 	}
 	switch {
 	case zaps.Encodelevel == "LowercaseLevelEncoder": // 小写编码器(默认)

@@ -16,9 +16,23 @@ import (
 	"go.uber.org/zap"
 )
 
-func UploadFile(c *gin.Context) {
+type UploadFileInterFace interface {
+	UploadFile(c *gin.Context)
+}
+
+type UploadFileStruct struct {
+}
+
+var UploadFilePart = new(UploadFileStruct)
+
+func (upload *UploadFileStruct) UploadFile(c *gin.Context) {
 	file, h, _ := c.Request.FormFile("file")
-	defer file.Close()
+	defer func(file multipart.File) {
+		err := file.Close()
+		if err != nil {
+
+		}
+	}(file)
 
 	url, err := Uploads(h, file)
 	if err != nil {
@@ -30,7 +44,7 @@ func UploadFile(c *gin.Context) {
 }
 
 func Uploads(h *multipart.FileHeader, f multipart.File) (string, error) {
-	alyos := global.GCONFIG.Oss
+	alyos := global.CONFIG.Oss
 	extName := path.Ext(h.Filename)
 	allowExtMap := map[string]bool{
 		".jpg":  true,

@@ -13,4 +13,8 @@ var (
 	RoomList             = Rules{"MinLng": {NotEmpty()}, "MaxLng": {NotEmpty()}, "MinLat": {NotEmpty()}, "MaxLat": {NotEmpty()}, "Page": {NotEmpty()}}
 	RankAlbumVer         = Rules{"IDs": {NotEmpty()}, "Page": {NotEmpty()}, "PageNum": {NotEmpty()}}
 	RadioVer             = Rules{"PageNo": {NotEmpty()}, "PageSize": {NotEmpty()}}
+	AlbumIdVar           = Rules{"AlbumId": {NotEmpty()}}
+	HotWordBillboardVar  = Rules{"CategoryId": {NotEmpty()}}
+	BasicInfoVar         = Rules{"Uid": {NotEmpty()}}
+	AnchorFollowVar      = Rules{"Uid": {NotEmpty()}, "Follow": {NotEmpty()}}
 )

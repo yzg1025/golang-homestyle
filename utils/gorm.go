@@ -11,11 +11,11 @@ import (
 )
 
 func GormMySql() *gorm.DB {
-	m := global.GCONFIG.MySql
+	m := global.CONFIG.MySql
 	if m.Name == "" {
 		return nil
 	}
-	staff := "?parseTime=true&charset=utf8&parseTime=true&loc=Local"
+	staff := "?parseTime=true&charset=utf8mb4&parseTime=true&loc=Local"
 	var dsn = m.Username + ":" + m.Password + "@tcp(" + m.Host + ")/" + m.Name + staff
 	mysqlConfig := mysql.Config{
 		DSN:                       dsn,
@@ -66,6 +66,21 @@ func registerModels(db *gorm.DB) {
 		models.Subcategories{},
 
 		models.Radio{},
+
+		models.Albumsimple{},
+		models.HotWordAlbums{},
+		models.TracksAlbum{},
+
+		models.TabList{},
+		models.TabViewList{},
+		models.HotWordBillboardCategory{},
+		models.HotWordBillboard{},
+
+		models.AnchorBasicInfo{},
+
+		models.ScoreDiagram{},
+		models.AlbumComments{},
+		models.Anchoralbums{},
 	)
 	if err != nil {
 		fmt.Println("表创建失败", err)

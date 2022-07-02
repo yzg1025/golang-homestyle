@@ -21,8 +21,14 @@ import (
 func Login(c *gin.Context) {
 	var L models.Login
 	_ = c.ShouldBindJSON(&L)
+
+	fmt.Print("------->", L)
 	if err := utils.Verify(L, utils.LoginVerify); err != nil {
-		utils.FailMag(err.Error(), c)
+		data1 := map[string]interface{}{
+			"userinfo": "登录",
+			"token":    "",
+		}
+		utils.FailWithDetailed(data1, err.Error(), c)
 		return
 	}
 	err, u := service.Login(L.Phone, L.Password)
@@ -36,13 +42,14 @@ func Login(c *gin.Context) {
 		"userinfo": u,
 		"token":    token,
 	}
+	fmt.Print("---------}}}", data)
 	// data['token'] =  token
 	utils.SuccessData(data, c)
 }
 
 func tokenSend(user models.Login) string {
 	j := &middleware.JWT{
-		SigningKey: []byte(global.GCONFIG.JWT.Signingkey),
+		SigningKey: []byte(global.CONFIG.JWT.Signingkey),
 	}
 	claims := middleware.MyClaims{
 		Uid:        user.Uid,
@@ -51,7 +58,7 @@ func tokenSend(user models.Login) string {
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix() - 1000,
 			ExpiresAt: time.Now().Unix() + 60*60*24*7,
-			Issuer:    global.GCONFIG.JWT.Signingkey,
+			Issuer:    global.CONFIG.JWT.Signingkey,
 		},
 	}
 	token, err := j.CreateToken(claims)
@@ -71,7 +78,7 @@ func SendMsgCode(c *gin.Context) {
 		return
 	}
 
-	var jh = global.GCONFIG
+	var jh = global.CONFIG
 	//初始化参数
 	param := url.Values{}
 	//配置请求参数,方法内部已处理urlencode问题,中文参数可以直接传参
