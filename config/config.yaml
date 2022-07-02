@@ -10,9 +10,9 @@ mysql:
   password: "123456"
 juhe:
   juheurl: "http://v.juhe.cn/sms/send"
-  apikey: "6372a0a15446a67e2576d538f02f55b5"
-  tplid: 185962
-  tplvalue: "#code#=185962"
+  apikey: "XXXX"
+  tplid: XXXX
+  tplvalue: "XXXX"
 zap:
   level: 'info'
   format: 'json'
@@ -23,8 +23,8 @@ zap:
   stacktracekey: 'stacktrace'
   loginconsole: true
 oss:
-  accesskeyid: 'LTAI4FwqokDreZU6t3q7hzqP'
-  accesskeysecret: 'qA90MM4eNhcqZAiIbcstuFlKbQ0TfA'
+  accesskeyid: 'XXX'
+  accesskeysecret: 'XXX'
   endpoint: 'oss-cn-beijing.aliyuncs.com'
   bucket: 'homestyle'
   uploaddir: 'home'
