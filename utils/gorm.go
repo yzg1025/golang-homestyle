@@ -52,10 +52,6 @@ func registerModels(db *gorm.DB) {
 		models.Location{},
 		models.Tag{},
 
-		models.Dog{},
-		models.GirlGod{},
-		models.Info{},
-
 		models.Albums{},
 		models.RankResult{},
 		models.RecommendAnchorList{},

@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"fmt"
 	"gin/global"
 	"gin/models"
@@ -9,34 +10,70 @@ import (
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"io/ioutil"
+	"strings"
 	"time"
 )
 
-func GetLogs(c *gin.Context)  {
-	err,list := service.GetLog()
-	if err != nil {
-		global.HS_LOG.Error("获取失败",zap.Any("err",err))
-		utils.FailMag("获取失败",c)
-	}
-	utils.SuccessData(list,c)
+type LogManger interface {
+	GetLogs(c *gin.Context)
+	SaveLogs(c *gin.Context)
 }
 
-func SaveLogs(c *gin.Context)  {
-	date := fmt.Sprintf("%v-%v-%v",time.Now().Format("2006"),time.Now().Format("01"),time.Now().Format("02"))
-	file,err := ioutil.ReadFile(fmt.Sprintf("./logs/%v.log",date))
+type LogCenter struct {
+	lg service.UserServiceCenter
+}
+
+func NewLogs() *LogCenter {
+	return &LogCenter{}
+}
+
+func (log *LogCenter) GetLogs(c *gin.Context) {
+	err, list := log.lg.GetLog()
+	if err != nil {
+		global.HS_LOG.Error("获取失败", zap.Any("err", err))
+		utils.FailMag("获取失败", c)
+	}
+	utils.SuccessData(list, c)
+}
+
+func (log *LogCenter) SaveLogs(c *gin.Context) {
+	date := fmt.Sprintf(
+		"%v-%v-%v",
+		time.Now().Format("2006"),
+		time.Now().Format("01"),
+		time.Now().Format("02"),
+	)
+	file, err := ioutil.ReadFile(fmt.Sprintf("./logs/%v.log", date))
 	if err != nil {
 		fmt.Println(err)
 	}
-	var Lg models.Logs
+
 	content := string(file)
-	_ = c.ShouldBindJSON(&Lg)
-	Lg.Content = content
-	err = service.SaveLog(Lg)
-	if err != nil {
-		utils.FailMag("日志存储失败",c)
+	replaceContents := strings.ReplaceAll(content, "}", "}|")
+	contentsToArr := strings.Split(replaceContents, "|")
+
+	var logs []models.Logs
+	_ = c.ShouldBindJSON(&logs)
+	for index, val := range contentsToArr[:len(contentsToArr)-1] {
+		var log models.Logs
+		err = json.Unmarshal([]byte(val), &log)
+		if err != nil {
+			fmt.Print("error", err)
+		}
+		newLog := &models.Logs{
+			ID:         float32(index),
+			Time:       log.Time,
+			Err:        log.Err,
+			MethodName: log.MethodName,
+			Msg:        log.Msg,
+			Level:      log.Level,
+		}
+		logs = append(logs, *newLog)
 	}
-	utils.SuccessMsg("保存成功",c)
-	fmt.Println("file",string(file))
-
+	err = log.lg.SaveLog(logs)
+	if err != nil {
+		utils.FailMag("err", c)
+		return
+	}
+	utils.SuccessMsg("日志存储成功", c)
 }
-

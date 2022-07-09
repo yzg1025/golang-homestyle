@@ -31,7 +31,7 @@ func (b *BannerSer) BannerC(c *gin.Context) {
 	var B models.Banner
 	_ = c.ShouldBindJSON(&B)
 	if err := utils.Verify(B, utils.BannerVer); err != nil {
-		global.HS_LOG.Error("banner 参数不为空", zap.Any("err", err))
+		global.HS_LOG.Error("banner 参数不为空", zap.Any("err", err), zap.Any("method", "BannerC"))
 		utils.FailMag(err.Error(), c)
 		return
 	}

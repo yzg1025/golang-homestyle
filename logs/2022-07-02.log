@@ -1,0 +1,4 @@
+{"level":"error","time":"2022/07/02 - 22:11:39","msg":"参数不为空","err":"open ./logs/2022-07-02.log: no such file or directory"}
+{"level":"error","time":"2022/07/02 - 22:11:51","msg":"参数不为空","err":null}
+{"level":"error","time":"2022/07/02 - 22:12:03","msg":"参数不为空","err":null}
+{"level":"error","time":"2022/07/02 - 23:33:01","msg":"SaveLogs参数不为空","err":null,"methodName":"SaveLogs"}

@@ -17,7 +17,7 @@ const (
 	SUCCESS = 200
 )
 
-// 返回结果
+// Result 返回结果
 func Result(code int, data interface{}, msg string, c *gin.Context) {
 	c.JSON(http.StatusOK, Response{
 		code,
@@ -26,12 +26,12 @@ func Result(code int, data interface{}, msg string, c *gin.Context) {
 	})
 }
 
-// 成功
+// OK 成功
 func OK(c *gin.Context) {
 	Result(SUCCESS, map[string]interface{}{}, "操作成功", c)
 }
 
-// 返回成功信息
+// SuccessMsg 返回成功信息
 func SuccessMsg(msg string, c *gin.Context) {
 	Result(SUCCESS, map[string]interface{}{}, msg, c)
 }
@@ -41,12 +41,12 @@ func SuccessData(data interface{}, c *gin.Context) {
 	Result(SUCCESS, data, "操作成功", c)
 }
 
-// 返回数据
+// SendDetail 返回数据
 func SendDetail(data interface{}, msg string, c *gin.Context) {
 	Result(SUCCESS, data, msg, c)
 }
 
-// 失败信息
+// FailMag 失败信息
 func FailMag(msg string, c *gin.Context) {
 	Result(ERROR, map[string]interface{}{}, msg, c)
 }

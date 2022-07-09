@@ -18,11 +18,28 @@ import (
 	"go.uber.org/zap"
 )
 
-func Login(c *gin.Context) {
+type UserManger interface {
+	Login(c *gin.Context)
+	SendMsgCode(c *gin.Context)
+	ChangePassword(c *gin.Context)
+	SelectCode(c *gin.Context)
+	CreateCode(c *gin.Context)
+	Register(c *gin.Context)
+	UpdateUserHeader(c *gin.Context)
+}
+
+type UserCenter struct {
+	ser service.UserServiceCenter
+}
+
+func NewUser() *UserCenter {
+	return &UserCenter{}
+}
+
+func (user *UserCenter) Login(c *gin.Context) {
 	var L models.Login
 	_ = c.ShouldBindJSON(&L)
-
-	fmt.Print("------->", L)
+	fmt.Println("lll", L)
 	if err := utils.Verify(L, utils.LoginVerify); err != nil {
 		data1 := map[string]interface{}{
 			"userinfo": "登录",
@@ -31,7 +48,7 @@ func Login(c *gin.Context) {
 		utils.FailWithDetailed(data1, err.Error(), c)
 		return
 	}
-	err, u := service.Login(L.Phone, L.Password)
+	err, u := user.ser.Login(L.Phone, L.Password)
 	if err != nil {
 		global.HS_LOG.Warn("该用户不存在!", zap.Any("err", err))
 		utils.FailMag("该用户不存在", c)
@@ -42,8 +59,7 @@ func Login(c *gin.Context) {
 		"userinfo": u,
 		"token":    token,
 	}
-	fmt.Print("---------}}}", data)
-	// data['token'] =  token
+	global.HS_REDIS.Set("uid", u.Uid, time.Second*60)
 	utils.SuccessData(data, c)
 }
 
@@ -70,7 +86,7 @@ func tokenSend(user models.Login) string {
 }
 
 // SendMsgCode 发送验证码
-func SendMsgCode(c *gin.Context) {
+func (user *UserCenter) SendMsgCode(c *gin.Context) {
 	var L models.Login
 	_ = c.ShouldBindJSON(&L)
 	if err := utils.Verify(L, utils.SendCode); err != nil {
@@ -103,7 +119,7 @@ func Post(apiURL string, params url.Values) (rs []byte, err error) {
 	return ioutil.ReadAll(resp.Body)
 }
 
-func ChangePassword(c *gin.Context) {
+func (user *UserCenter) ChangePassword(c *gin.Context) {
 	var C models.ChangePassword
 	_ = c.ShouldBindJSON(&C)
 	if err := utils.Verify(C, utils.ChangePasswordVerify); err != nil {
@@ -111,7 +127,7 @@ func ChangePassword(c *gin.Context) {
 		return
 	}
 	U := &models.Login{Phone: C.Phone, Password: C.Password}
-	if err, _ := service.ChangePassword(U, C.NewPassword); err != nil {
+	if err, _ := user.ser.ChangePassword(U, C.NewPassword); err != nil {
 		global.HS_LOG.Error("修改失败", zap.Any("err", err))
 		utils.FailMag("修改失败，原密码与当前账户不符", c)
 		return
@@ -120,10 +136,10 @@ func ChangePassword(c *gin.Context) {
 }
 
 // SelectCode 查询国家code
-func SelectCode(c *gin.Context) {
+func (user *UserCenter) SelectCode(c *gin.Context) {
 	var S models.AreaCode
 	_ = c.ShouldBindJSON(&S)
-	err, list := service.QueryCountry()
+	err, list := user.ser.QueryCountry()
 	if err != nil {
 		global.HS_LOG.Error("countrycode获取失败", zap.Any("err", err))
 		utils.FailMag("countrycode获取失败", c)
@@ -132,7 +148,7 @@ func SelectCode(c *gin.Context) {
 }
 
 // CreateCode 新增国家code
-func CreateCode(c *gin.Context) {
+func (user *UserCenter) CreateCode(c *gin.Context) {
 	var S []models.AreaCode
 	_ = c.ShouldBindJSON(&S)
 	for _, value := range S {
@@ -140,12 +156,12 @@ func CreateCode(c *gin.Context) {
 			utils.FailMag(err.Error(), c)
 			return
 		}
-		if isExit, country := service.IsExitCountry(value.Cname); isExit {
+		if isExit, country := user.ser.IsExitCountry(value.Cname); isExit {
 			global.HS_LOG.Error("重复添加", zap.Any("data", country))
 			utils.FailWithDetailed(country, "重复添加", c)
 			return
 		}
-		if err := service.CreateCountry(value); err != nil {
+		if err := user.ser.CreateCountry(value); err != nil {
 			global.HS_LOG.Error("添加失败", zap.Any("err", err))
 			utils.FailMag("添加失败", c)
 			return
@@ -154,25 +170,43 @@ func CreateCode(c *gin.Context) {
 	utils.SuccessMsg("添加成功", c)
 }
 
-func Register(c *gin.Context) {
+func (user *UserCenter) Register(c *gin.Context) {
 	var R models.Register
 	_ = c.ShouldBindJSON(&R)
 	if err := utils.Verify(R, utils.Register); err != nil {
 		utils.FailMag(err.Error(), c)
 		return
 	}
-	user := &models.Login{
+	userInfo := &models.Login{
 		NickName:     R.NickName,
 		Phone:        R.Phone,
 		Password:     R.Password,
 		RegisterTime: time.Now(),
 		LoginMethod:  "pc",
 	}
-	err, u := service.Register(*user)
+	err, u := user.ser.Register(*userInfo)
 	if err != nil {
 		global.HS_LOG.Error("注册失败", zap.Any("err", err))
 		utils.FailMag("注册失败", c)
 		return
 	}
 	utils.SuccessData(u, c)
+}
+
+// UpdateUserHeader 修改用户图像
+func (user *UserCenter) UpdateUserHeader(c *gin.Context) {
+	headerUrl := c.Query("url")
+	result, err := global.HS_REDIS.Get("uid").Result()
+	fmt.Println("+++++++++++++")
+	if err != nil {
+		global.HS_LOG.Error("获取用户uid失败", zap.Any("method", "UpdateUserHeader"))
+		return
+	}
+	fmt.Println("----<", headerUrl, result)
+	err1 := user.ser.UpdateHeader(headerUrl, result)
+	if err1 != nil {
+		global.HS_LOG.Error("修改图像失败", zap.Any("method", "UpdateUserHeader"))
+		return
+	}
+	utils.SuccessMsg("修改成功", c)
 }

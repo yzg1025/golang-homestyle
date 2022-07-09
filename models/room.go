@@ -75,23 +75,3 @@ type Location struct {
 	Name string `json:"title"`
 	Url  string `gorm:"column:url";json:"url"`
 }
-
-// 测试
-type Info struct {
-	ID    int
-	DogId uint
-	Money int
-}
-
-type Dog struct {
-	ID       int
-	Name     string
-	Info     Info
-	GirlGods []GirlGod `gorm:"many2many:dog_girl_god"`
-}
-
-type GirlGod struct {
-	ID   int
-	Name string
-	Dogs []Dog `gorm:"many2many:dog_girl_god"`
-}
