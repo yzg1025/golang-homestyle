@@ -23,8 +23,8 @@ zap:
   stacktracekey: 'stacktrace'
   loginconsole: true
 oss:
-  accesskeyid: 'LTAI4FwqokDreZU6t3q7hzqP'
-  accesskeysecret: 'qA90MM4eNhcqZAiIbcstuFlKbQ0TfA'
+  accesskeyid: ''
+  accesskeysecret: ''
   endpoint: 'oss-cn-beijing.aliyuncs.com'
   bucket: 'homestyle'
   uploaddir: 'home'
