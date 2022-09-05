@@ -6,6 +6,6 @@ type Pagination struct {
 }
 
 type AlbumIdParams struct {
-	AlbumId int `form:albumId" json:"albumId"`
+	AlbumId int `form:"albumId" json:"albumId"`
 	Pagination
 }

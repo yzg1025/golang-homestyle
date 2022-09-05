@@ -2,7 +2,6 @@ package service
 
 import (
 	"errors"
-	"fmt"
 	"gin/global"
 	"gin/models"
 	"gin/utils"
@@ -28,13 +27,11 @@ type UserServiceCenter struct {
 func (us *UserServiceCenter) Login(phone, password string) (err error, user *models.Login) {
 	var U models.Login
 	password = utils.MD5([]byte(password))
-	err = global.HS_DB.Where("phone = ? AND password = ?", phone, password).First(&U).Error
-	fmt.Print("3232323", U)
+	err = global.HS_DB.Where("phone = ? AND password = ?", phone, password).Omit("password").First(&U).Error
 	return err, &U
 }
 
 func (us *UserServiceCenter) SaveLog(logs []models.Logs) (err error) {
-	fmt.Println("logs", logs)
 	err = global.HS_DB.Create(&logs).Error
 	return err
 }

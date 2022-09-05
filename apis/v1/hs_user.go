@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -26,6 +27,7 @@ type UserManger interface {
 	CreateCode(c *gin.Context)
 	Register(c *gin.Context)
 	UpdateUserHeader(c *gin.Context)
+	SendEmailCode(c *gin.Context)
 }
 
 type UserCenter struct {
@@ -39,13 +41,8 @@ func NewUser() *UserCenter {
 func (user *UserCenter) Login(c *gin.Context) {
 	var L models.Login
 	_ = c.ShouldBindJSON(&L)
-	fmt.Println("lll", L)
 	if err := utils.Verify(L, utils.LoginVerify); err != nil {
-		data1 := map[string]interface{}{
-			"userinfo": "登录",
-			"token":    "",
-		}
-		utils.FailWithDetailed(data1, err.Error(), c)
+		utils.FailMag("参数不为空"+err.Error(), c)
 		return
 	}
 	err, u := user.ser.Login(L.Phone, L.Password)
@@ -177,36 +174,68 @@ func (user *UserCenter) Register(c *gin.Context) {
 		utils.FailMag(err.Error(), c)
 		return
 	}
+	var methods string
+	// 获取登录设备
+	loginMethod := c.Request.Header.Values("User-Agent")
+	for _, s := range loginMethod {
+		if strings.Contains(s, "Mozilla") {
+			methods = "pc"
+			continue
+		}
+		methods = "mobile"
+	}
+	var names string
+	if len(R.NickName) == 0 {
+		names = "未知"
+	} else {
+		names = R.NickName
+	}
+	fmt.Println(names)
 	userInfo := &models.Login{
-		NickName:     R.NickName,
+		NickName:     names,
 		Phone:        R.Phone,
 		Password:     R.Password,
 		RegisterTime: time.Now(),
-		LoginMethod:  "pc",
+		LoginMethod:  methods,
 	}
-	err, u := user.ser.Register(*userInfo)
+	err, _ := user.ser.Register(*userInfo)
 	if err != nil {
 		global.HS_LOG.Error("注册失败", zap.Any("err", err))
-		utils.FailMag("注册失败", c)
+		utils.FailMag(err.Error(), c)
 		return
 	}
-	utils.SuccessData(u, c)
+	utils.SuccessMsg("注册成功", c)
 }
 
 // UpdateUserHeader 修改用户图像
 func (user *UserCenter) UpdateUserHeader(c *gin.Context) {
 	headerUrl := c.Query("url")
 	result, err := global.HS_REDIS.Get("uid").Result()
-	fmt.Println("+++++++++++++")
 	if err != nil {
 		global.HS_LOG.Error("获取用户uid失败", zap.Any("method", "UpdateUserHeader"))
 		return
 	}
-	fmt.Println("----<", headerUrl, result)
 	err1 := user.ser.UpdateHeader(headerUrl, result)
 	if err1 != nil {
 		global.HS_LOG.Error("修改图像失败", zap.Any("method", "UpdateUserHeader"))
 		return
 	}
 	utils.SuccessMsg("修改成功", c)
+}
+
+// SendEmailCode 发送邮箱验证码
+func (user *UserCenter) SendEmailCode(c *gin.Context) {
+	email := c.PostForm("email")
+	code := utils.GetRandom()
+	if email == "" {
+		utils.FailMag("邮箱账号不为空", c)
+		return
+	}
+	err := utils.SendEmail(email, code)
+	if err != nil {
+		utils.FailMag("验证码发送失败", c)
+		return
+	}
+	global.HS_REDIS.Set(email, code, time.Minute*5)
+	utils.SuccessMsg("验证码发送成功", c)
 }

@@ -15,6 +15,7 @@ func BaseRouterUser(Router *gin.RouterGroup) (R gin.IRoutes) {
 
 		BR.GET("select_country", user.SelectCode)
 		BR.POST("create_country", user.CreateCode)
+		BR.POST("email", user.SendEmailCode)
 	}
 	return BR
 }

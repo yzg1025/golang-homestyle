@@ -2,14 +2,15 @@ package utils
 
 import (
 	"fmt"
+	"gin/generate_code/auto_model"
 	"gin/global"
 	"gin/models"
-
 	"go.uber.org/zap"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
+// GormMySql 初始化mysql
 func GormMySql() *gorm.DB {
 	m := global.CONFIG.MySql
 	if m.Name == "" {
@@ -46,11 +47,6 @@ func registerModels(db *gorm.DB) {
 		models.Logs{},
 		models.AreaCode{},
 		models.Banner{},
-		models.PersonalCateGory{},
-		models.RoomCount{},
-		models.RoomList{},
-		models.Location{},
-		models.Tag{},
 
 		models.Albums{},
 		models.RankResult{},
@@ -77,6 +73,15 @@ func registerModels(db *gorm.DB) {
 		models.ScoreDiagram{},
 		models.AlbumComments{},
 		models.Anchoralbums{},
+
+		// Api 模型
+		models.SimpleAPI{},
+		models.SimpleApiRequestField{},
+		models.SimpleApiResponseField{},
+
+		// auto_code #
+		auto_model.SearchList{},
+		auto_model.SearchList{},
 	)
 	if err != nil {
 		fmt.Println("表创建失败", err)

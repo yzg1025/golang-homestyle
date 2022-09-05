@@ -3,7 +3,7 @@ package utils
 var (
 	IDVer                = Rules{"ID": {NotEmpty()}}
 	LoginVerify          = Rules{"Phone": {NotEmpty()}, "Password": {NotEmpty()}}
-	Register             = Rules{"Phone": {NotEmpty()}, "NickName": {NotEmpty()}, "Password": {NotEmpty()}}
+	Register             = Rules{"Phone": {NotEmpty()}, "Password": {NotEmpty()}}
 	SendCode             = Rules{"Phone": {NotEmpty()}}
 	CountryCode          = Rules{"CountryCode": {NotEmpty()}, "Cname": {NotEmpty()}, "Code": {NotEmpty()}}
 	ChangePasswordVerify = Rules{"Phone": {NotEmpty()}, "Password": {NotEmpty()}, "NewPassword": {NotEmpty()}}
@@ -17,4 +17,5 @@ var (
 	HotWordBillboardVar  = Rules{"CategoryId": {NotEmpty()}}
 	BasicInfoVar         = Rules{"Uid": {NotEmpty()}}
 	AnchorFollowVar      = Rules{"Uid": {NotEmpty()}, "Follow": {NotEmpty()}}
+	APIVar               = Rules{"ApiDesc": {NotEmpty()}, "ApiMethod": {NotEmpty()}, "ApiName": {NotEmpty()}, "ApiPath": {NotEmpty()}}
 )
